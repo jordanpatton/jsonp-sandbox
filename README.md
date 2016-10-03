@@ -18,6 +18,7 @@ node app.js
 ### Expected Results
 
 The following things will happen _very_ quickly when you click `Inject`:
+
 1. Browser adds a `script` node to the DOM.
 2. Browser requests a file matching the script node's `src`.
 3. Server generates the script dynamically.
