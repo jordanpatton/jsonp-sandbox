@@ -11,7 +11,7 @@
   <body>
     <div class="container" style="text-align:center;">
       <h1>Script Injection Sandbox</h1>
-      <form id="scriptInjectionSandboxForm" name="scriptInjectionSandboxForm" onsubmit="javascript:return app.onSubmit(event);">
+      <form id="appForm" name="appForm" onsubmit="javascript:return app.onSubmit(event);">
         <div>
           <fieldset style="display:inline-block;">
             <legend>Request (must be JSON-parseable)</legend>
@@ -19,7 +19,7 @@
           </fieldset>
         </div>
         <div style="margin:10px 0;">
-            <button type="submit" style="margin:auto;font-size:24px;">Inject</button>
+          <button type="submit" style="margin:auto;font-size:24px;">Inject&nbsp;&darr;</button>
         </div>
         <div>
           <fieldset style="display:inline-block;">

@@ -14,7 +14,7 @@ window.app = (function (window, document, scriptInjector) {
    */
   function onSubmit(event) {
     var successCallback = function(response, requestId) {
-      sandboxForm.responseTarget.value = JSON.stringify(response);
+      appForm.responseTarget.value = JSON.stringify(response);
       /* delete ingested data */
       delete scriptInjector.ingest[requestId];
       /* delete injected script element */
@@ -23,14 +23,14 @@ window.app = (function (window, document, scriptInjector) {
       parent.removeChild(element);
     };
     var failureCallback = function(requestId) {
-      sandboxForm.responseTarget.value = 'Inject failed!';
+      appForm.responseTarget.value = 'Inject failed!';
     };
 
     var payload;
     try {
-      payload = JSON.parse(sandboxForm.requestTarget.value);
+      payload = JSON.parse(appForm.requestTarget.value);
     } catch(e) {
-      sandboxForm.responseTarget.value = 'Failed to parse request JSON.';
+      appForm.responseTarget.value = 'Failed to parse request JSON.';
       return false;
     }
 
