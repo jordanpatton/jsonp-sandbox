@@ -53,7 +53,8 @@ window.scriptInjector = (function (window, document) {
       element.onload = options.callback;
     }
 
-    document.head.appendChild(element);
+    var documentHead = document.getElementsByTagName('head')[0] || document.documentElement;
+    documentHead.insertBefore(element, documentHead.firstChild);
   }
 
   /**
