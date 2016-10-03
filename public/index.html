@@ -9,9 +9,27 @@
     <title>Script Injector Sandbox</title>
   </head>
   <body>
-    <div class="container">
+    <div class="container" style="text-align:center;">
       <h1>Script Injector Sandbox</h1>
+      <form id="scriptInjectorSandboxForm" name="scriptInjectorSandboxForm" onsubmit="javascript:return App.onSubmit(event);">
+        <div>
+          <fieldset style="display:inline-block;">
+            <legend>Request (must be JSON-parseable)</legend>
+            <textarea id="requestTarget" name="requestTarget" cols="50" rows="10">{"key1": "val1", "key2": "val2"}</textarea>
+          </fieldset>
+        </div>
+        <div style="margin:10px 0;">
+            <button type="submit" style="margin:auto;font-size:24px;">Inject</button>
+        </div>
+        <div>
+          <fieldset style="display:inline-block;">
+            <legend>Response (returned from server)</legend>
+            <textarea id="responseTarget" name="responseTarget" cols="50" rows="10"></textarea>
+          </fieldset>
+        </div>
+      </form>
     </div>
     <script src="/js/script-injector.js"></script>
+    <script src="/js/app.js"></script>
   </body>
 </html>

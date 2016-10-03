@@ -35,6 +35,7 @@ window.ScriptInjector = (function (window, document) {
    * @param {boolean} options.async Optional.
    * @param {function} options.callback Optional.
    * @param {boolean} options.defer Optional.
+   * @param {string} options.id DOM selector for easy removal (optional).
    */
   function injectScript(options) {
     if (typeof options === 'undefined' || typeof options.src === 'undefined') {
@@ -45,6 +46,7 @@ window.ScriptInjector = (function (window, document) {
     element.src = options.src;
     element.async = options.async || false;
     element.defer = options.defer || false;
+    element.id = options.id || undefined;
 
     if (Object.prototype.toString.call(options.callback) === '[object Function]') {
       element.onload = options.callback;
@@ -94,15 +96,16 @@ window.ScriptInjector = (function (window, document) {
     var requestId = guidv4();
     var callback = function() {
       if (ingest && ingest[requestId]) {
-        return successCallback(ingest[requestId]);
+        return successCallback(ingest[requestId], requestId);
       } else {
-        return failureCallback();
+        return failureCallback(requestId);
       }
     };
 
     return injectScript({
       src: '/js/generated-script.js?requestId='+requestId+'&'+serialize(data),
-      callback: callback
+      callback: callback,
+      id: requestId
     });
   }
 
