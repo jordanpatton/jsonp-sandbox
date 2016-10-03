@@ -43,18 +43,35 @@ window.scriptInjector = (function (window, document) {
       throw new TypeError('injectScript missing one of: options, options.src');
     }
 
-    var element = document.createElement('script');
-    element.src = options.src;
-    element.async = options.async || false;
-    element.defer = options.defer || false;
-    element.id = options.id || undefined;
+    var headElement = document.getElementsByTagName('head')[0] || document.documentElement;
+    var scriptElement = document.createElement('script');
+    scriptElement.src = options.src;
+    scriptElement.async = options.async || false;
+    scriptElement.defer = options.defer || false;
+    scriptElement.id = options.id || undefined;
 
     if (Object.prototype.toString.call(options.callback) === '[object Function]') {
-      element.onload = options.callback;
+      /* polyfill `onload` event for some older browsers */
+      var isDone = false;
+      scriptElement.onload = scriptElement.onreadystatechange = function(event) {
+        /* ... */
+        if (!isDone && (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete')) {
+            isDone = true;
+            /* ... */
+            var callbackResult = options.callback(event);
+            /* ... */
+            scriptElement.onload = scriptElement.onreadystatechange = null;
+            if (headElement && scriptElement.parentNode) {
+              headElement.removeChild(scriptElement);
+            }
+            /* ... */
+            return callbackResult;
+        }
+      };
     }
 
-    var documentHead = document.getElementsByTagName('head')[0] || document.documentElement;
-    documentHead.insertBefore(element, documentHead.firstChild);
+    /* ... */
+    headElement.insertBefore(scriptElement, headElement.firstChild);
   }
 
   /**
