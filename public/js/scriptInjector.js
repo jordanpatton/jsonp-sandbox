@@ -50,27 +50,28 @@ window.scriptInjector = (function (window, document) {
     scriptElement.defer = options.defer || false;
     scriptElement.id = options.id || undefined;
 
-    if (Object.prototype.toString.call(options.callback) === '[object Function]') {
-      /* polyfill `onload` event for some older browsers */
-      var isDone = false;
-      scriptElement.onload = scriptElement.onreadystatechange = function(event) {
-        /* ... */
-        if (!isDone && (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete')) {
-            isDone = true;
-            /* ... */
-            var callbackResult = options.callback(event);
-            /* ... */
-            scriptElement.onload = scriptElement.onreadystatechange = null;
-            if (headElement && scriptElement.parentNode) {
-              headElement.removeChild(scriptElement);
-            }
-            /* ... */
-            return callbackResult;
+    /* polyfill `onload` event for some older browsers */
+    var isDone = false;
+    scriptElement.onload = scriptElement.onreadystatechange = function(event) {
+      /* if script is loaded... */
+      if (!isDone && (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete')) {
+        isDone = true;
+        /* invoke user callback */
+        var callbackResult =
+          (Object.prototype.toString.call(options.callback) === '[object Function]') ?
+          options.callback(event) :
+          undefined;
+        /* unset event handler (avoid memory leak) */
+        scriptElement.onload = scriptElement.onreadystatechange = null;
+        /* remove DOM element */
+        if (headElement && scriptElement.parentNode) {
+          headElement.removeChild(scriptElement);
         }
-      };
-    }
-
-    /* ... */
+        /* return user callback result */
+        return callbackResult;
+      }
+    };
+    /* insertBefore instead of appendChild for browser compatibility */
     headElement.insertBefore(scriptElement, headElement.firstChild);
   }
 
