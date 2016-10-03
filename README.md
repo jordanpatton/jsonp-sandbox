@@ -3,15 +3,21 @@
 ### Installation (requires [node](https://nodejs.org))
 
 ```bash
+# install the sandbox
 git clone https://github.com/jordanpatton/script-injection-sandbox.git
 cd script-injection-sandbox
 npm install
-node app.js
+
+# start the server
+node server.js
+
+# start the client (in new terminal session)
+node client.js
 ```
 
 ### Usage
 
-1. Go to [localhost:3000](http://localhost:3000).
+1. Open the [client](http://localhost:3001).
 2. Open your browser console and inspect your network traffic.
 3. Click the `Inject` button.
 
@@ -20,7 +26,7 @@ node app.js
 The following things will happen _very_ quickly when you click `Inject`:
 
 1. Browser adds a `script` node to the DOM.
-2. Browser requests a file matching the script node's `src`.
+2. Browser requests a cross-origin file from the [server](http://localhost:3000/dynamic.js).
 3. Server generates the script dynamically.
 4. Browser loads the generated script.
 5. Browser parses the generated script and adds the result to memory.
