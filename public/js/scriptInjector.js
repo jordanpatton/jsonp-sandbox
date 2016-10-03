@@ -123,7 +123,7 @@ window.scriptInjector = (function (window, document) {
     };
 
     return injectScript({
-      src: '/js/generated-script.js?requestId='+requestId+'&'+serialize(data),
+      src: 'http://localhost:3000/dynamic.js?requestId='+requestId+'&'+serialize(data),
       callback: callback,
       id: requestId
     });

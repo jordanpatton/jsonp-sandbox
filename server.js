@@ -1,6 +1,5 @@
 /* dependencies */
 var express = require('express');
-var path    = require('path');
 
 /* environment variables */
 var CONFIG_PORT = parseInt((process.env.CONFIG_PORT || 3000), 10);
@@ -20,7 +19,7 @@ app.use(function (req, res, next) {
 });
 
 /* express routing */
-app.get('/js/generated-script.js', function (req, res, next) {
+app.get('/dynamic.js', function (req, res, next) {
   if (typeof req.query.requestId !== 'undefined') {
     var requestId = req.query.requestId;
     delete req.query.requestId;
@@ -36,20 +35,13 @@ app.get('/js/generated-script.js', function (req, res, next) {
   }
 });
 
-/* express static file server */
-app.use(
-  express.static(
-    path.join(__dirname, 'public')
-  )
-);
-
 /* express invocation */
 app.listen(CONFIG_PORT, function () {
   console.log([
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-    'script-injection-sandbox running',
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+    'script-injection-sandbox server running',
     ' => http://localhost:' + CONFIG_PORT,
     ' => [ ctrl + c ] to quit',
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
   ].join('\n'));
 });
