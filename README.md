@@ -23,7 +23,7 @@ The following things will happen _very_ quickly when you click `Inject`:
 2. Browser requests a file matching the script node's `src`.
 3. Server generates the script dynamically.
 4. Browser loads the generated script.
-5. Browser parses the generated script and adds the results to memory.
+5. Browser parses the generated script and adds the result to memory.
 6. Browser inserts the result in the lower `textarea`.
 7. Browser removes the `script` node from the DOM.
 
