@@ -26,9 +26,9 @@ app.get('/js/generated-script.js', function (req, res, next) {
     delete req.query.requestId;
     res.writeHead(200, {'Content-Type': 'text/javascript'});
     res.write(
-        'ScriptInjector = ScriptInjector || {};' +
-        'ScriptInjector.ingest = ScriptInjector.ingest || {};' +
-        'ScriptInjector.ingest[\''+requestId+'\'] = '+JSON.stringify(req.query)+';'
+        'scriptInjector = scriptInjector || {};' +
+        'scriptInjector.ingest = scriptInjector.ingest || {};' +
+        'scriptInjector.ingest[\''+requestId+'\'] = '+JSON.stringify(req.query)+';'
     );
     res.end();
   } else {
@@ -46,10 +46,10 @@ app.use(
 /* express invocation */
 app.listen(CONFIG_PORT, function () {
   console.log([
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-    'script-injector-sandbox running',
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+    'script-injection-sandbox running',
     ' => http://localhost:' + CONFIG_PORT,
     ' => [ ctrl + c ] to quit',
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
   ].join('\n'));
 });

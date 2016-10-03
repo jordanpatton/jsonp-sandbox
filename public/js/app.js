@@ -1,7 +1,7 @@
 /**
- * App
+ * app
  */
-window.App = (function (window, document, ScriptInjector) {
+window.app = (function (window, document, scriptInjector) {
 
   /* ================ */
   /* Workflow Methods */
@@ -14,27 +14,27 @@ window.App = (function (window, document, ScriptInjector) {
    */
   function onSubmit(event) {
     var successCallback = function(response, requestId) {
-      scriptInjectorSandboxForm.responseTarget.value = JSON.stringify(response);
+      sandboxForm.responseTarget.value = JSON.stringify(response);
       /* delete ingested data */
-      delete ScriptInjector.ingest[requestId];
+      delete scriptInjector.ingest[requestId];
       /* delete injected script element */
       var element = document.getElementById(requestId);
       var parent = element.parentElement;
       parent.removeChild(element);
     };
     var failureCallback = function(requestId) {
-      scriptInjectorSandboxForm.responseTarget.value = 'Inject failed!';
+      sandboxForm.responseTarget.value = 'Inject failed!';
     };
 
     var payload;
     try {
-      payload = JSON.parse(scriptInjectorSandboxForm.requestTarget.value);
+      payload = JSON.parse(sandboxForm.requestTarget.value);
     } catch(e) {
-      scriptInjectorSandboxForm.responseTarget.value = 'Failed to parse request JSON.';
+      sandboxForm.responseTarget.value = 'Failed to parse request JSON.';
       return false;
     }
 
-    ScriptInjector.request(payload, successCallback, failureCallback);
+    scriptInjector.request(payload, successCallback, failureCallback);
 
     return false;
   }
@@ -48,4 +48,4 @@ window.App = (function (window, document, ScriptInjector) {
     'onSubmit': onSubmit
   };
 
-})(window, window.document, window.ScriptInjector);
+})(window, window.document, window.scriptInjector);

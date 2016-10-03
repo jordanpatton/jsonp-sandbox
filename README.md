@@ -1,10 +1,10 @@
-# Script Injector Sandbox
+# Script Injection Sandbox
 
 ### Installation (requires [node](https://nodejs.org))
 
 ```bash
-git clone https://github.com/jordanpatton/script-injector-sandbox.git
-cd script-injector-sandbox
+git clone https://github.com/jordanpatton/script-injection-sandbox.git
+cd script-injection-sandbox
 npm install
 node app.js
 ```

@@ -1,7 +1,8 @@
 /**
  * Script Injector
+ * NOTE: Singleton; there should be exactly one ingest.
  */
-window.ScriptInjector = (function (window, document) {
+window.scriptInjector = (function (window, document) {
 
   /* ========== */
   /* Properties */
