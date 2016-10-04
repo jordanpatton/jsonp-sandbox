@@ -1,5 +1,17 @@
 /* dependencies */
 var express = require('express');
+var url     = require('url');
+
+/**
+ * Randomly generates a GUID v4.
+ * @returns {string} Randomly-generated GUID v4.
+ */
+function guidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r=Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;
+    return v.toString(16);
+  });
+}
 
 /* environment variables */
 var CONFIG_PORT = parseInt((process.env.CONFIG_PORT || 3000), 10);
@@ -18,7 +30,23 @@ app.use(function (req, res, next) {
   next();
 });
 
-/* express routing */
+/* express routing: session management */
+app.get('/session', function (req, res, next) {
+  if (typeof req.query.redirectUri !== 'undefined') {
+    /* parse redirectUri AND parse query string */
+    var parsedUri = url.parse(req.query.redirectUri, true);
+    /* begin session */
+    parsedUri.query.sessionId = guidv4();
+    /* force uri to update */
+    delete parsedUri.search;
+    /* redirect with re-constructed uri */
+    res.redirect(302, url.format(parsedUri));
+  } else {
+    res.sendStatus(400);
+  }
+});
+
+/* express routing: dynamic script */
 app.get('/dynamic.js', function (req, res, next) {
   if (typeof req.query.requestId !== 'undefined') {
     var requestId = req.query.requestId;

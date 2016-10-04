@@ -8,11 +8,20 @@ window.app = (function (window, document, scriptInjector) {
   /* ================ */
 
   /**
+   * Redirects to the server's session management route.
+   * @returns {boolean} False to prevent event propagation.
+   */
+  function onClickBeginSession(event) {
+    window.location = 'http://localhost:3000/session?redirectUri=' + window.location.href;
+    return false;
+  }
+
+  /**
    * Handles the `onsubmit` event for a form.
    * @param {Object} event The original onsubmit event.
    * @returns {boolean} False to prevent event propagation.
    */
-  function onSubmit(event) {
+  function onSubmitAppForm(event) {
     var successCallback = function(response, requestId) {
       appForm.responseTarget.value = JSON.stringify(response);
       /* delete ingested data */
@@ -45,7 +54,8 @@ window.app = (function (window, document, scriptInjector) {
   /* ===================================== */
 
   return {
-    'onSubmit': onSubmit
+    'onClickBeginSession': onClickBeginSession,
+    'onSubmitAppForm': onSubmitAppForm
   };
 
 })(window, window.document, window.scriptInjector);
