@@ -29,10 +29,10 @@ app.use(
 /* express invocation */
 app.listen(CONFIG_PORT, function () {
   console.log([
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-    'script-injection-sandbox client running',
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+    'jsonp-sandbox client running',
     ' => http://localhost:' + CONFIG_PORT,
     ' => [ ctrl + c ] to quit',
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
   ].join('\n'));
 });

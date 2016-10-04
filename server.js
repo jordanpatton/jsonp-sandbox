@@ -77,9 +77,9 @@ app.get('/dynamic.js', function (req, res, next) {
     };
     res.writeHead(200, {'Content-Type': 'text/javascript'});
     res.write(
-        'scriptInjector = scriptInjector || {};' +
-        'scriptInjector.ingest = scriptInjector.ingest || {};' +
-        'scriptInjector.ingest[\''+requestId+'\'] = '+JSON.stringify(responsePayload)+';'
+        'jsonp = jsonp || {};' +
+        'jsonp.ingest = jsonp.ingest || {};' +
+        'jsonp.ingest[\''+requestId+'\'] = '+JSON.stringify(responsePayload)+';'
     );
     res.end();
   } else {
@@ -90,10 +90,10 @@ app.get('/dynamic.js', function (req, res, next) {
 /* express invocation */
 app.listen(CONFIG_PORT, function () {
   console.log([
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-    'script-injection-sandbox server running',
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
+    'jsonp-sandbox server running',
     ' => http://localhost:' + CONFIG_PORT,
     ' => [ ctrl + c ] to quit',
-    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+    '~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
   ].join('\n'));
 });

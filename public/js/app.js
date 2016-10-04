@@ -1,7 +1,7 @@
 /**
  * app
  */
-window.app = (function (window, document, scriptInjector) {
+window.app = (function (window, document, jsonp) {
 
   /* ================ */
   /* Workflow Methods */
@@ -25,14 +25,10 @@ window.app = (function (window, document, scriptInjector) {
     var successCallback = function(response, requestId) {
       appForm.responseTarget.value = JSON.stringify(response);
       /* delete ingested data */
-      delete scriptInjector.ingest[requestId];
-      /* delete injected script element */
-      var element = document.getElementById(requestId);
-      var parent = element.parentElement;
-      parent.removeChild(element);
+      delete jsonp.ingest[requestId];
     };
     var failureCallback = function(requestId) {
-      appForm.responseTarget.value = 'Inject failed!';
+      appForm.responseTarget.value = 'Request failed!';
     };
 
     var payload;
@@ -43,7 +39,7 @@ window.app = (function (window, document, scriptInjector) {
       return false;
     }
 
-    scriptInjector.request(payload, successCallback, failureCallback);
+    jsonp.request(payload, successCallback, failureCallback);
 
     return false;
   }
@@ -58,4 +54,4 @@ window.app = (function (window, document, scriptInjector) {
     'onSubmitAppForm': onSubmitAppForm
   };
 
-})(window, window.document, window.scriptInjector);
+})(window, window.document, window.jsonp);

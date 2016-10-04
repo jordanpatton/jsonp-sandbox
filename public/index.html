@@ -6,11 +6,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Script Injection Sandbox</title>
+    <title>JSONP Sandbox</title>
   </head>
   <body>
     <div class="container" style="text-align:center;">
-      <h1>Script Injection Sandbox</h1>
+      <h1>JSONP Sandbox</h1>
       <form id="appForm" name="appForm" onsubmit="javascript:return app.onSubmitAppForm(event);">
         <div>
           <fieldset style="display:inline-block;">
@@ -20,7 +20,7 @@
         </div>
         <div style="margin:10px 0;">
           <button type="button" onclick="javascript:return app.onClickBeginSession(event);" style="height:40px;margin:auto;vertical-align:middle;font-size:24px;">&#128274;&nbsp;Begin&nbsp;Session</button>
-          <button type="submit" style="height:40px;margin:auto;vertical-align:middle;font-size:24px;">Inject&nbsp;&darr;</button>
+          <button type="submit" style="height:40px;margin:auto;vertical-align:middle;font-size:24px;">Request&nbsp;&darr;</button>
         </div>
         <div>
           <fieldset style="display:inline-block;">
@@ -30,7 +30,7 @@
         </div>
       </form>
     </div>
-    <script src="/js/scriptInjector.js"></script>
+    <script src="/js/jsonp.js"></script>
     <script src="/js/app.js"></script>
   </body>
 </html>

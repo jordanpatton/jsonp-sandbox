@@ -1,11 +1,11 @@
-# Script Injection Sandbox
+# JSONP Sandbox
 
 ### Installation (requires [node](https://nodejs.org))
 
 ```bash
 # install the sandbox
-git clone https://github.com/jordanpatton/script-injection-sandbox.git
-cd script-injection-sandbox
+git clone https://github.com/jordanpatton/jsonp-sandbox.git
+cd jsonp-sandbox
 npm install
 
 # start the server
@@ -19,11 +19,11 @@ node client.js
 
 1. Open the [client](http://localhost:3001).
 2. Open your browser console and inspect your network traffic.
-3. Click the `Inject` button.
+3. Click the `Request` button.
 
 ### Expected Results
 
-The following things will happen _very_ quickly when you click `Inject`:
+The following things will happen _very_ quickly when you click `Request`:
 
 1. Browser adds a `script` node to the DOM.
 2. Browser requests a cross-origin file from the [server](http://localhost:3000/dynamic.js).
@@ -39,4 +39,4 @@ It's likely this will happen so quickly that you won't even see the DOM transfor
 
 **Q:** Why would I ever use this?
 
-**A:** Script injection provides a viable alternative to cross-origin resource sharing.
+**A:** JSONP provides a viable alternative to cross-origin resource sharing.

@@ -1,11 +1,11 @@
 {
-  "name": "script-injection-sandbox",
+  "name": "jsonp-sandbox",
   "version": "0.0.1",
-  "description": "Script Injection Sandbox",
+  "description": "JSONP Sandbox",
   "author": "Jordan Patton <jordanpatton@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jordanpatton/script-injection-sandbox.git"
+    "url": "https://github.com/jordanpatton/jsonp-sandbox.git"
   },
   "scripts": {
     "start": "node app.js"

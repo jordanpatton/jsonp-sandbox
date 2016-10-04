@@ -1,8 +1,7 @@
 /**
- * Script Injector
- * NOTE: Singleton; there should be exactly one ingest.
+ * JSONP (Singleton)
  */
-window.scriptInjector = (function (window, document) {
+window.jsonp = (function (window, document) {
 
   /* ========== */
   /* Properties */
