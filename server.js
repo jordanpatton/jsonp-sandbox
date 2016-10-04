@@ -67,20 +67,18 @@ app.get('/session', function (req, res, next) {
 
 /* express routing: dynamic script */
 app.get('/dynamic.js', function (req, res, next) {
-  if (typeof req.query.requestId !== 'undefined') {
-    var requestId = req.query.requestId;
-    delete req.query.requestId;
+  var callback = req.query.callback;
+  if (typeof callback !== 'undefined') {
+    /* build response data */
+    delete req.query.callback;
     var responsePayload = {
       query: req.query,
       timestamp: Date.now(),
       token: (req.session.token ? req.session.token : 'Begin Session')
     };
+    /* send response */
     res.writeHead(200, {'Content-Type': 'text/javascript'});
-    res.write(
-        'jsonp = jsonp || {};' +
-        'jsonp.ingest = jsonp.ingest || {};' +
-        'jsonp.ingest[\''+requestId+'\'] = '+JSON.stringify(responsePayload)+';'
-    );
+    res.write(callback+' && '+callback+'('+JSON.stringify(responsePayload)+');');
     res.end();
   } else {
     res.sendStatus(400);

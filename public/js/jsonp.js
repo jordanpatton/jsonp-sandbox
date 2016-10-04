@@ -3,30 +3,9 @@
  */
 window.jsonp = (function (window, document) {
 
-  /* ========== */
-  /* Properties */
-  /* ========== */
-
-  /**
-   * Stores all of the inbound data from the server.
-   */
-  var ingest = {};
-
-
   /* =================== */
   /* Convenience Methods */
   /* =================== */
-
-  /**
-   * Randomly generates a GUID v4.
-   * @returns {string} Randomly-generated GUID v4.
-   */
-  function guidv4() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r=Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;
-      return v.toString(16);
-    });
-  }
 
   /**
    * Injects a script into the DOM with given options.
@@ -35,7 +14,6 @@ window.jsonp = (function (window, document) {
    * @param {boolean} options.async Optional.
    * @param {function} options.callback Optional.
    * @param {boolean} options.defer Optional.
-   * @param {string} options.id DOM selector for easy removal (optional).
    */
   function injectScript(options) {
     if (typeof options === 'undefined' || typeof options.src === 'undefined') {
@@ -47,7 +25,6 @@ window.jsonp = (function (window, document) {
     scriptElement.src = options.src;
     scriptElement.async = options.async || false;
     scriptElement.defer = options.defer || false;
-    scriptElement.id = options.id || undefined;
 
     /* polyfill `onload` event for some older browsers */
     var isDone = false;
@@ -102,30 +79,22 @@ window.jsonp = (function (window, document) {
   /* ================ */
 
   /**
-   * Performs a script-injection request.
-   * @param {Object} data JSON-compatible data payload (optional).
-   * @param {function} successCallback Required.
-   * @param {function} failureCallback Required.
+   * Performs a JSONP request.
+   * @param {Object} options Required.
+   * @param {string} options.url Required.
+   * @param {string} options.callback Callback path relative to window context (optional).
+   * @param {Object} options.data JSON-compatible data payload (optional).
    */
-  function request(data, successCallback, failureCallback) {
-    if (typeof successCallback === 'undefined' || typeof failureCallback === 'undefined') {
-      throw new TypeError('request missing one of: successCallback, failureCallback');
+  function request(options) {
+    if (typeof options === 'undefined' || typeof options.url === 'undefined') {
+      throw new TypeError('request missing one of: options, options.url');
     }
-
-    var requestId = guidv4();
-    var callback = function() {
-      if (ingest && ingest[requestId]) {
-        return successCallback(ingest[requestId], requestId);
-      } else {
-        return failureCallback(requestId);
-      }
-    };
-
-    return injectScript({
-      src: 'http://localhost:3000/dynamic.js?requestId='+requestId+'&'+serialize(data),
-      callback: callback,
-      id: requestId
-    });
+    /* construct the request src */
+    var src = options.url +
+      (options.url.indexOf('?') !== -1 ? '&' : '?') + 'callback=' + options.callback +
+      '&' + serialize(options.data);
+    /* perform the request */
+    return injectScript({src: src});
   }
 
 
@@ -134,7 +103,6 @@ window.jsonp = (function (window, document) {
   /* ===================================== */
 
   return {
-    'ingest': ingest,
     'request': request
   };
 

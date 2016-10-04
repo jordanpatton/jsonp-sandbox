@@ -3,6 +3,13 @@
  */
 window.app = (function (window, document, jsonp) {
 
+  /* ========== */
+  /* Properties */
+  /* ========== */
+
+  var SERVER_URL = 'http://localhost:3000';
+
+
   /* ================ */
   /* Workflow Methods */
   /* ================ */
@@ -12,8 +19,12 @@ window.app = (function (window, document, jsonp) {
    * @returns {boolean} False to prevent event propagation.
    */
   function onClickBeginSession(event) {
-    window.location = 'http://localhost:3000/session?redirectUri=' + window.location.href;
+    window.location = SERVER_URL + '/session?redirectUri=' + window.location.href;
     return false;
+  }
+
+  function onReceiveData(data) {
+    appForm.responseTarget.value = JSON.stringify(data);
   }
 
   /**
@@ -22,25 +33,21 @@ window.app = (function (window, document, jsonp) {
    * @returns {boolean} False to prevent event propagation.
    */
   function onSubmitAppForm(event) {
-    var successCallback = function(response, requestId) {
-      appForm.responseTarget.value = JSON.stringify(response);
-      /* delete ingested data */
-      delete jsonp.ingest[requestId];
-    };
-    var failureCallback = function(requestId) {
-      appForm.responseTarget.value = 'Request failed!';
-    };
-
-    var payload;
+    /* build data payload */
+    var data;
     try {
-      payload = JSON.parse(appForm.requestTarget.value);
+      data = JSON.parse(appForm.requestTarget.value);
     } catch(e) {
       appForm.responseTarget.value = 'Failed to parse request JSON.';
       return false;
     }
-
-    jsonp.request(payload, successCallback, failureCallback);
-
+    /* perform request */
+    jsonp.request({
+      url: SERVER_URL + '/dynamic.js',
+      callback: 'app.onReceiveData',
+      data: data
+    });
+    /* prevent event propagation */
     return false;
   }
 
@@ -51,6 +58,7 @@ window.app = (function (window, document, jsonp) {
 
   return {
     'onClickBeginSession': onClickBeginSession,
+    'onReceiveData': onReceiveData,
     'onSubmitAppForm': onSubmitAppForm
   };
 
