@@ -1,6 +1,8 @@
 /* dependencies */
-var express = require('express');
-var url     = require('url');
+var express          = require('express');
+var expressSession   = require('express-session');
+var NeDBSessionStore = require('nedb-session-store')(expressSession);
+var url              = require('url');
 
 /**
  * Randomly generates a GUID v4.
@@ -24,6 +26,21 @@ if (isNaN(CONFIG_PORT)) {
 var app = express();
 
 /* express middleware */
+app.use(
+  expressSession({
+    secret: 'SESSION_SECRET',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      path: '/',
+      httpOnly: true,
+      maxAge: 365 * 24 * 60 * 60 * 1000 /* 1 year */
+    },
+    store: new NeDBSessionStore({
+      filename: path.join(__dirname, 'databases/sessions.db')
+    })
+  })
+);
 app.use(function (req, res, next) {
   /* miscellaneous response headers */
   res.setHeader('Cache-Control', 'no-cache');

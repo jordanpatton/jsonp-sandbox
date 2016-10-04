@@ -11,7 +11,9 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "express-session": "^1.14.1",
+    "nedb-session-store": "^1.1.1"
   },
   "main": "server.js"
 }
