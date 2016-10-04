@@ -2,6 +2,7 @@
 var express          = require('express');
 var expressSession   = require('express-session');
 var NeDBSessionStore = require('nedb-session-store')(expressSession);
+var path             = require('path');
 var url              = require('url');
 
 /**
@@ -25,7 +26,7 @@ if (isNaN(CONFIG_PORT)) {
 /* express configuration */
 var app = express();
 
-/* express middleware */
+/* express middleware: session */
 app.use(
   expressSession({
     secret: 'SESSION_SECRET',
@@ -41,8 +42,9 @@ app.use(
     })
   })
 );
+
+/* express middleware: headers */
 app.use(function (req, res, next) {
-  /* miscellaneous response headers */
   res.setHeader('Cache-Control', 'no-cache');
   next();
 });
@@ -53,7 +55,7 @@ app.get('/session', function (req, res, next) {
     /* parse redirectUri AND parse query string */
     var parsedUri = url.parse(req.query.redirectUri, true);
     /* begin session */
-    parsedUri.query.sessionId = guidv4();
+    req.session.token = parsedUri.query.token = guidv4();
     /* force uri to update */
     delete parsedUri.search;
     /* redirect with re-constructed uri */
@@ -68,11 +70,16 @@ app.get('/dynamic.js', function (req, res, next) {
   if (typeof req.query.requestId !== 'undefined') {
     var requestId = req.query.requestId;
     delete req.query.requestId;
+    var responsePayload = {
+      query: req.query,
+      timestamp: Date.now(),
+      token: (req.session.token ? req.session.token : 'Begin Session')
+    };
     res.writeHead(200, {'Content-Type': 'text/javascript'});
     res.write(
         'scriptInjector = scriptInjector || {};' +
         'scriptInjector.ingest = scriptInjector.ingest || {};' +
-        'scriptInjector.ingest[\''+requestId+'\'] = '+JSON.stringify(req.query)+';'
+        'scriptInjector.ingest[\''+requestId+'\'] = '+JSON.stringify(responsePayload)+';'
     );
     res.end();
   } else {
