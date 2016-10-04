@@ -29,7 +29,7 @@ The following things will happen _very_ quickly when you click `Request`:
 2. Browser requests a cross-origin file from the [server](http://localhost:3000/dynamic.js).
 3. Server generates the script dynamically.
 4. Browser loads the generated script.
-5. Browser parses the generated script and adds the result to memory.
+5. Browser parses the generated script and invokes the embedded callback.
 6. Browser inserts the result in the lower `textarea`.
 7. Browser removes the `script` node from the DOM.
 

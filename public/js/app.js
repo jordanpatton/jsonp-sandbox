@@ -23,6 +23,9 @@ window.app = (function (window, document, jsonp) {
     return false;
   }
 
+  /**
+   * Receives to the server's jsonp response.
+   */
   function onReceiveData(data) {
     appForm.responseTarget.value = JSON.stringify(data);
   }
